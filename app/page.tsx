@@ -5,6 +5,7 @@ import { ValueProps } from "@/components/sections/value-props";
 import { Problem } from "@/components/sections/problem";
 import { HowItWorks } from "@/components/sections/how-it-works";
 import { ForPatients } from "@/components/sections/for-patients";
+import { AppPreview } from "@/components/sections/app-preview";
 import { ForDoctors } from "@/components/sections/for-doctors";
 import { Security } from "@/components/sections/security";
 import { VerifiedDoctor } from "@/components/sections/verified-doctor";
@@ -26,17 +27,21 @@ export default function Home() {
       <EcgBackdrop />
       <Navbar />
       <main className="relative z-10">
+        {/* ── BLOQUE 1: PACIENTES ─────────────────────────── */}
         <Hero />
         <ValueProps />
         <Problem />
         <HowItWorks />
         <ForPatients />
-        <ForDoctors />
+        <AppPreview />
         <Security />
-        <VerifiedDoctor />
         <Benefits />
         <Faq />
         <FinalCta />
+
+        {/* ── BLOQUE 2: DOCTORES ─────────────────────────── */}
+        <ForDoctors />
+        <VerifiedDoctor />
       </main>
       <Footer />
     </>

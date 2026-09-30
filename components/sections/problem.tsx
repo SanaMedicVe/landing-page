@@ -5,8 +5,8 @@ import { motion, useReducedMotion } from "motion/react";
 import {
   Hourglass,
   FileQuestion,
-  PlugZap,
   MessageSquareLock,
+  ScrollText,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -16,17 +16,17 @@ const FRICTION = [
   {
     icon: Hourglass,
     title: "Esperas que se alargan",
-    body: "Semántas para una cita que suele resolverse en minutos.",
+    body: "Días o semanas para una cita que muchas veces se resuelve en minutos.",
   },
   {
     icon: FileQuestion,
     title: "Historiales dispersos",
-    body: "Resultados en un lugar, recetas en otro, nadie ve el conjunto.",
+    body: "Resultados en un lugar, recetas en otro, y nadie ve el conjunto de tu salud.",
   },
   {
-    icon: PlugZap,
-    title: "Sistemas que no conectan",
-    body: "Pacientes y doctores usando herramientas distintas, sin continuidad.",
+    icon: ScrollText,
+    title: "Recetas en papel",
+    body: "Documentos que se pierden, se mojan o no llegan a tu médico tratante.",
   },
   {
     icon: MessageSquareLock,
@@ -54,7 +54,7 @@ export function Problem() {
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-sana-primary/15 bg-white px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-sana-primary">
               <span className="h-1.5 w-1.5 rounded-full bg-sana-accent" />
-              el problema
+              el día a día
             </span>
             <motion.h2
               id="problem-heading"
@@ -66,9 +66,10 @@ export function Problem() {
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="mt-5 font-heading text-3xl font-semibold leading-tight text-sana-primary sm:text-4xl lg:text-5xl"
             >
-              La salud no debería ser{" "}
-              <span className="text-gradient-sana">un rompecabezas</span> cada
-              vez que la necesitas.
+              Cuidar tu salud{" "}
+              <span className="text-gradient-sana">
+                no debería ser tan difícil.
+              </span>
             </motion.h2>
             <motion.p
               initial={
@@ -81,11 +82,11 @@ export function Problem() {
                 delay: 0.15,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="mt-5 max-w-xl text-base leading-relaxed text-sana-muted sm:text-lg"
+              className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-sana-muted sm:text-lg sm:mx-0"
             >
-              Entre agendas saturadas, expedientes en papel y canales inseguros,
-              el cuidado se fragmenta. Sana existe para volver a unir las piezas
-              — paciente, doctor e información clínica — en un solo lugar.
+              Entre esperas largas, expedientes en papel y canales inseguros, el
+              cuidado se fragmenta. Sana reúne tu información, tus citas y tus
+              doctores — en una sola app que cabe en tu bolsillo.
             </motion.p>
           </div>
 

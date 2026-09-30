@@ -15,7 +15,7 @@ const heading = Comfortaa({
   fallback: ["Caviar Dreams", "system-ui", "sans-serif"],
 });
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const mono = Geist_Mono({
   variable: "--font-mono",
@@ -26,14 +26,15 @@ const mono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://sana.lat"),
   title: {
-    default: "Sana — Tu salud, conectada en tiempo real",
+    default: "Sana — Tu app de salud, conectada en tiempo real",
     template: "%s | Sana",
   },
   description:
-    "Sana une a pacientes con doctores verificados desde una app intuitiva y un panel clínico diseñado para profesionales de la salud en Latinoamérica.",
+    "Sana es tu app de salud: agenda citas con doctores verificados, lleva tu historial siempre contigo y recibe seguimiento real desde tu celular. Pensada para LATAM.",
   applicationName: "Sana",
   authors: [{ name: "Sana" }],
   keywords: [
+    "app de salud",
     "salud",
     "telemedicina",
     "doctores verificados",
@@ -41,29 +42,30 @@ export const metadata: Metadata = {
     "historial clínico",
     "Sana",
     "LATAM",
+    "pacientes",
   ],
   openGraph: {
     type: "website",
     locale: "es_LA",
     url: "https://sana.lat",
     siteName: "Sana",
-    title: "Sana — Tu salud, conectada en tiempo real",
+    title: "Sana — Tu app de salud, conectada en tiempo real",
     description:
-      "Pacientes y doctores verificados, conectados en una sola plataforma. Descubre Sana.",
+      "Tu app de salud: agenda, consulta y lleva tu historial siempre contigo. Descubre Sana.",
     images: [
       {
         url: "/og-sana.svg",
         width: 1200,
         height: 630,
-        alt: "Sana — salud conectada en tiempo real",
+        alt: "Sana — tu app de salud, conectada en tiempo real",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sana — Tu salud, conectada en tiempo real",
+    title: "Sana — Tu app de salud, conectada en tiempo real",
     description:
-      "Pacientes y doctores verificados, conectados en una sola plataforma.",
+      "Tu app de salud: agenda, consulta y lleva tu historial siempre contigo.",
     images: ["/og-sana.svg"],
   },
   icons: {
@@ -79,7 +81,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es"
-      className={cn("h-full", "antialiased", heading.variable, mono.variable, "font-sans", geist.variable)}
+      className={cn(
+        "h-full",
+        "antialiased",
+        heading.variable,
+        mono.variable,
+        "font-sans",
+        geist.variable,
+      )}
     >
       <body className="min-h-full flex flex-col bg-white text-sana-primary selection:bg-sana-accent/40">
         {children}

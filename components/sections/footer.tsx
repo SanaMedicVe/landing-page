@@ -4,6 +4,12 @@ import * as React from "react";
 import Link from "next/link";
 import { Activity, Mail } from "lucide-react";
 
+import {
+  InstagramGlyph,
+  XGlyph,
+  LinkedinGlyph,
+} from "@/components/shared/social-icons";
+
 const COLS = [
   {
     title: "Producto",
@@ -27,7 +33,7 @@ const COLS = [
     title: "Compañía",
     links: [
       { label: "Sobre Sana", href: "/sobre" },
-      { label: "Verified Doctor", href: "#verified-doctor" },
+      { label: "Doctor Verificado", href: "#doctor-verificado" },
       { label: "Preguntas frecuentes", href: "#faq" },
       { label: "Contacto", href: "mailto:hola@sana.lat" },
     ],
@@ -43,7 +49,6 @@ export function Footer() {
       />
       <div className="mx-auto max-w-6xl px-5 py-16 sm:py-20 lg:px-8">
         <div className="grid gap-12 md:grid-cols-[1.2fr_2fr]">
-          {/* Brand */}
           <div>
             <Link
               href="#top"
@@ -76,7 +81,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Columns */}
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
             {COLS.map((col) => (
               <div key={col.title}>
@@ -110,7 +114,6 @@ export function Footer() {
         </div>
       </div>
 
-      {/* sutil ECG footer */}
       <div aria-hidden className="absolute inset-x-0 bottom-2 h-6 opacity-50">
         <svg viewBox="0 0 520 24" className="h-full w-full">
           <path
@@ -143,53 +146,5 @@ function SocialIcon({
     >
       {children}
     </Link>
-  );
-}
-
-function InstagramGlyph() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="16"
-      height="16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" />
-    </svg>
-  );
-}
-
-function XGlyph() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="14"
-      height="14"
-      fill="currentColor"
-      aria-hidden
-    >
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z" />
-    </svg>
-  );
-}
-
-function LinkedinGlyph() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="16"
-      height="16"
-      fill="currentColor"
-      aria-hidden
-    >
-      <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z" />
-    </svg>
   );
 }

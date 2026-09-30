@@ -9,42 +9,38 @@ import {
 } from "motion/react";
 import { useMounted } from "@/lib/use-reduced-motion";
 
+type AnyMotionComponent = React.ComponentType<Record<string, unknown>>;
+
 /**
  * `motion` SSR-safe: hasta que el componente esté montado en cliente,
  * todas las props de animación (`initial`, `animate`, `whileInView`, etc.)
  * se tratan como inertes para que el HTML del servidor coincida con el
  * primer render del cliente. Tras el mount, las animaciones funcionan
  * normalmente y se respeta `prefers-reduced-motion`.
- *
- * Esto evita los mismatches de hidratación que produce framer-motion
- * cuando escribe estilos inline de `initial` durante el SSR.
- *
- * La API es compatible con `motion.div`, `motion.h2`, etc.
  */
-export function createSafeMotion<P extends keyof typeof motion>(
-  Component: (typeof motion)[P]
+export function createSafeMotion<Tag extends keyof HTMLElementTagNameMap>(
+  tag: Tag
 ) {
-  type Props = HTMLMotionProps<P> & { children?: React.ReactNode };
+  type Props = HTMLMotionProps<Tag> & { children?: React.ReactNode };
+
+  const MotionAny = motion(tag) as unknown as AnyMotionComponent;
 
   const SafeMotion = React.forwardRef<unknown, Props>(function SafeMotion(
     props,
     ref
   ) {
     const { initial, animate, whileInView, whileHover, whileTap, ...rest } =
-      props;
+      props as Props;
     const mounted = useMounted();
     const reduced = useReducedMotion();
 
     if (!mounted || reduced) {
-      // Sin animación, render normal
-      const MotionAny = Component as unknown as React.ElementType;
-      return <MotionAny ref={ref} {...rest} />;
+      return <MotionAny ref={ref as React.Ref<unknown>} {...rest} />;
     }
 
-    const MotionAny = Component as unknown as React.ElementType;
     return (
       <MotionAny
-        ref={ref}
+        ref={ref as React.Ref<unknown>}
         initial={initial}
         animate={animate}
         whileInView={whileInView}

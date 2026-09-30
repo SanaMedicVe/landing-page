@@ -3,10 +3,14 @@
 import * as React from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { Smartphone, Stethoscope, ArrowRight, Activity } from "lucide-react";
+import { Smartphone, ArrowRight, Activity, Stethoscope } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useMounted } from "@/lib/use-reduced-motion";
+import {
+  AppStoreBadge,
+  GooglePlayBadge,
+} from "@/components/shared/store-badges";
 
 export function FinalCta() {
   const reduced = useReducedMotion();
@@ -29,7 +33,6 @@ export function FinalCta() {
         className="pointer-events-none absolute right-0 top-1/3 h-[320px] w-[320px] rounded-full bg-sana-accent/10 blur-[110px]"
       />
 
-      {/* ECG muy estable */}
       <div
         aria-hidden
         className="absolute inset-x-0 top-12 h-[80px] opacity-80"
@@ -62,6 +65,7 @@ export function FinalCta() {
       </div>
 
       <div className="mx-auto flex max-w-4xl flex-col items-center px-5 text-center lg:px-8">
+        {/* centrado responsive ya está en text-center */}
         <motion.div
           initial={!mounted ? false : reduced ? false : { opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -84,7 +88,9 @@ export function FinalCta() {
         >
           Tu próxima consulta
           <br />
-          <span className="text-gradient-sana-light">empieza aquí.</span>
+          <span className="text-gradient-sana-light">
+            empieza en tu bolsillo.
+          </span>
         </motion.h2>
 
         <motion.p
@@ -94,8 +100,8 @@ export function FinalCta() {
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           className="mt-5 max-w-xl text-base leading-relaxed text-white/75 sm:text-lg"
         >
-          Encuentra al especialista correcto o gestiona tu práctica desde un
-          solo lugar. Sana está pensada para hispanohablantes en LATAM.
+          Descarga Sana, crea tu perfil en menos de 2 minutos y conecta con
+          doctores verificados. Tu salud, siempre contigo.
         </motion.p>
 
         <motion.div
@@ -104,7 +110,7 @@ export function FinalCta() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
+          className="mt-10 flex flex-col items-center gap-4"
         >
           <Button
             asChild
@@ -114,26 +120,37 @@ export function FinalCta() {
           >
             <Link href="#top">
               <Smartphone className="h-4 w-4" />
-              Descargar la app
+              Descargar la app gratis
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </Button>
-          <Button
-            id="cta-doctores"
-            asChild
-            size="lg"
-            variant="glassDark"
-            className="rounded-full"
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <AppStoreBadge />
+            <GooglePlayBadge />
+          </div>
+        </motion.div>
+
+        <motion.div
+          id="cta-doctores"
+          initial={!mounted ? false : reduced ? false : { opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8"
+        >
+          <Link
+            href="#para-doctores"
+            className="inline-flex items-center gap-2 text-sm text-white/65 transition-colors hover:text-sana-accent"
           >
-            <Link href="#top">
-              <Stethoscope className="h-4 w-4" />
-              Soy profesional de la salud
-            </Link>
-          </Button>
+            <Stethoscope className="h-4 w-4" />
+            ¿Eres profesional de la salud?
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </motion.div>
 
         <p className="mt-6 text-xs text-white/55">
-          Compatible con iOS y Android. Panel clínico en la web.
+          Compatible con iOS y Android. Tu información siempre protegida.
         </p>
       </div>
     </section>

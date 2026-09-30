@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { motion, useReducedMotion, AnimatePresence } from "motion/react";
-import { Menu, X, Activity } from "lucide-react";
+import { Menu, X, Activity, Smartphone } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -11,9 +11,9 @@ import { useMounted } from "@/lib/use-reduced-motion";
 
 const NAV_LINKS = [
   { label: "Cómo funciona", anchor: "#como-funciona" },
+  { label: "App", anchor: "#app" },
   { label: "Pacientes", anchor: "#para-pacientes" },
   { label: "Doctores", anchor: "#para-doctores" },
-  { label: "Seguridad", anchor: "#seguridad" },
   { label: "Preguntas", anchor: "#faq" },
 ];
 
@@ -92,10 +92,9 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* CTAs (md+) */}
         <div className="hidden items-center gap-2 md:flex">
           <Button asChild size="sm" variant="ghost" className="rounded-full">
-            <Link href="#cta-doctores">Soy doctor</Link>
+            <Link href="#para-doctores">Soy doctor</Link>
           </Button>
           <Button
             asChild
@@ -103,7 +102,10 @@ export function Navbar() {
             variant="primary"
             className="beam-border rounded-full"
           >
-            <Link href="#cta-pacientes">Soy paciente</Link>
+            <Link href="#cta-pacientes">
+              <Smartphone className="mr-1 h-3.5 w-3.5" />
+              Descargar app
+            </Link>
           </Button>
         </div>
 
@@ -119,7 +121,6 @@ export function Navbar() {
           {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
         </button>
       </motion.div>
-
       {/* Mobile sheet */}
       <AnimatePresence>
         {open && (
@@ -148,13 +149,13 @@ export function Navbar() {
             </ul>
             <div className="mt-2 grid grid-cols-2 gap-2 border-t border-sana-line pt-3">
               <Button asChild size="sm" variant="outline">
-                <Link onClick={() => setOpen(false)} href="#cta-doctores">
+                <Link onClick={() => setOpen(false)} href="#para-doctores">
                   Soy doctor
                 </Link>
               </Button>
               <Button asChild size="sm" variant="primary">
                 <Link onClick={() => setOpen(false)} href="#cta-pacientes">
-                  Soy paciente
+                  Descargar app
                 </Link>
               </Button>
             </div>

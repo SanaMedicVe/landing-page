@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { Lock, Database, ShieldCheck, Eye } from "lucide-react";
+import { Lock, HeartHandshake, Eye, ShieldCheck } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useMounted } from "@/lib/use-reduced-motion";
@@ -10,19 +10,19 @@ import { useMounted } from "@/lib/use-reduced-motion";
 const PILLARS = [
   {
     icon: Lock,
-    label: "Cifrado de extremo a extremo",
+    label: "Tu información siempre protegida",
   },
   {
-    icon: Database,
-    label: "Almacenamiento con estándares regionales",
-  },
-  {
-    icon: ShieldCheck,
-    label: "Acceso verificado por rol",
+    icon: HeartHandshake,
+    label: "Cuidamos cada detalle por ti",
   },
   {
     icon: Eye,
-    label: "Trazabilidad y control para el paciente",
+    label: "Tú decides quién ve qué",
+  },
+  {
+    icon: ShieldCheck,
+    label: "Doctores verificados, siempre",
   },
 ];
 
@@ -35,7 +35,6 @@ export function Security() {
       aria-labelledby="security-heading"
       className="relative isolate overflow-hidden bg-sana-night py-20 text-white sm:py-28"
     >
-      {/* línea ECG muy plana (calma) */}
       <div aria-hidden className="absolute inset-x-0 top-12 h-[100px]">
         <svg
           viewBox="0 0 520 100"
@@ -86,7 +85,7 @@ export function Security() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="mt-5 font-heading text-3xl font-semibold leading-tight text-white sm:text-4xl lg:text-5xl"
           >
-            Privacidad{" "}
+            Tu salud, en buenas manos.
           </motion.h2>
           <motion.p
             initial={reduced ? false : { opacity: 0, y: 10 }}
@@ -95,10 +94,9 @@ export function Security() {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             className="mt-5 max-w-xl text-base leading-relaxed text-white/75 sm:text-lg"
           >
-            Tu información viaja cifrada de extremo a extremo y se almacena
-            cumpliendo con los estándares de protección de datos en salud
-            aplicables a la región. Sana no hace claims regulatorios específicos
-            hasta que el equipo Legal los aprueba.
+            Sana se encarga de los detalles técnicos para que tú solo te
+            preocupes por tu salud. Tus datos viajan protegidos, se guardan de
+            forma segura y nadie accede a ellos sin tu permiso.
           </motion.p>
 
           <ul className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -127,7 +125,7 @@ export function Security() {
             ))}
           </ul>
         </div>
-        {/* Card "custodia de datos" */}
+
         <motion.div
           initial={
             !mounted ? false : reduced ? false : { opacity: 0, scale: 0.96 }
@@ -140,7 +138,7 @@ export function Security() {
           )}
         >
           <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-sana-accent">
-            data · custody
+            tu tranquilidad primero
           </p>
           <h3 className="mt-2 font-heading text-xl font-semibold text-white">
             Tu información no se vende. No se reutiliza. No se pierde.
@@ -149,16 +147,16 @@ export function Security() {
           <ol className="mt-6 space-y-5">
             {[
               {
-                t: "En tránsito",
-                d: "TLS 1.3 entre tu dispositivo y nuestros servicios.",
+                t: "Mientras viajen tus datos",
+                d: "Se transmiten por canales seguros entre tu app y Sana.",
               },
               {
-                t: "En reposo",
-                d: "Cifrado en bases de datos dentro de la región LATAM.",
+                t: "Mientras estén guardados",
+                d: "Se almacenan cifrados y se tratan con los más altos estándares.",
               },
               {
-                t: "En uso",
-                d: "Acceso por rol. Cada acción queda registrada.",
+                t: "Mientras los uses",
+                d: "Solo tú decides qué se comparte y con quién.",
               },
             ].map((row, i) => (
               <li key={row.t} className="flex gap-4">
