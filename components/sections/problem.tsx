@@ -105,19 +105,21 @@ export function Problem() {
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 className={cn(
-                  "group relative overflow-hidden rounded-2xl border border-sana-line bg-white p-5",
+                  "group relative flex items-start gap-3 overflow-hidden rounded-2xl border border-sana-line bg-white p-5",
                   "transition-colors hover:border-sana-accent/40",
                 )}
               >
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-sana-primary text-white">
+                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sana-primary text-white">
                   <f.icon className="h-4 w-4" />
                 </span>
-                <h3 className="mt-3 font-heading text-base font-semibold text-sana-primary">
-                  {f.title}
-                </h3>
-                <p className="mt-1 text-sm leading-relaxed text-sana-muted">
-                  {f.body}
-                </p>
+                <div>
+                  <h3 className="font-heading text-base font-semibold text-sana-primary">
+                    {f.title}
+                  </h3>
+                  <p className="mt-1 text-sm leading-relaxed text-sana-muted">
+                    {f.body}
+                  </p>
+                </div>
                 <span
                   aria-hidden
                   className="pointer-events-none absolute inset-x-5 -bottom-px h-px bg-gradient-to-r from-transparent via-sana-accent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"

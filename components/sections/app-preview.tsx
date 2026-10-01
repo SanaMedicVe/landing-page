@@ -11,8 +11,8 @@ import {
   FileText,
 } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { useMounted } from "@/lib/use-reduced-motion";
+import { AppScreenMockup } from "@/components/shared/app-screen-mockup";
 
 const SCREENS = [
   {
@@ -285,6 +285,7 @@ function PhonePreview({
   mounted: boolean;
 }) {
   const tilt = index % 2 === 0 ? -3 : 3;
+  const Icon = screen.icon;
   return (
     <motion.div
       initial={
@@ -303,33 +304,12 @@ function PhonePreview({
         aria-hidden
         className="absolute -inset-3 -z-10 rounded-[2.5rem] bg-gradient-to-br from-sana-primary/15 via-sana-accent/10 to-transparent blur-xl"
       />
-      <div
-        className={cn(
-          "relative w-full rounded-[2rem] border border-sana-night-900/20 bg-sana-night-900 p-2",
-          "shadow-[0_20px_50px_-20px_rgba(0,31,55,0.45)]",
-        )}
+      <AppScreenMockup
+        label={screen.label}
+        icon={<Icon className="h-3.5 w-3.5" />}
       >
-        <div className="relative overflow-hidden rounded-[1.6rem] bg-white">
-          <div className="flex items-center justify-between bg-sana-night-900 px-4 pb-2 pt-3 text-[9px] font-medium text-white/80">
-            <span>9:41</span>
-            <span className="flex items-center gap-1">
-              <span className="h-1 w-1 rounded-full bg-sana-accent" />
-              Sana
-            </span>
-          </div>
-          <div className="space-y-2 bg-white p-3 pb-4">
-            <div className="flex items-center justify-between">
-              <p className="font-heading text-sm font-semibold text-sana-primary">
-                {screen.label}
-              </p>
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-sana-accent-50 text-sana-accent-700">
-                <screen.icon className="h-3.5 w-3.5" />
-              </span>
-            </div>
-            {screen.content}
-          </div>
-        </div>
-      </div>
+        {screen.content}
+      </AppScreenMockup>
       <span className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-sana-line bg-white px-2.5 py-1 text-[10px] font-medium text-sana-primary">
         <span className="h-1.5 w-1.5 rounded-full bg-sana-accent" />
         {screen.badge}

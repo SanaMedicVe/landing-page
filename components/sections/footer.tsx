@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Activity, Mail } from "lucide-react";
+import Image from "next/image";
+import { Mail } from "lucide-react";
 
 import {
   InstagramGlyph,
@@ -55,10 +56,13 @@ export function Footer() {
               className="inline-flex items-center gap-2.5"
               aria-label="Sana — inicio"
             >
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-hero-gradient shadow-[0_8px_24px_-10px_rgba(0,63,110,0.7)]">
-                <Activity className="h-4 w-4 text-white" strokeWidth={2.4} />
-              </span>
-              <span className="font-heading text-lg font-bold">Sana</span>
+              <Image
+                src="/logo/sana-logo-primary.svg"
+                alt="Sana"
+                width={1574.41}
+                height={537.44}
+                className="h-9 w-auto brightness-0 invert"
+              />
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/65">
               Pacientes y doctores verificados, conectados en una sola

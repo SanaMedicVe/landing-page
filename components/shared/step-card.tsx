@@ -32,7 +32,7 @@ export function StepCard({ icon: Icon, n, title, body, index }: StepCardProps) {
       {mounted && !reduced && (
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[68px] -translate-x-1/2"
+          className="pointer-events-none absolute left-[44px] top-3 -translate-x-1/2"
         >
           <span
             className="ripple-ring absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full border border-sana-accent/60"
@@ -45,17 +45,20 @@ export function StepCard({ icon: Icon, n, title, body, index }: StepCardProps) {
         </div>
       )}
 
-      <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-hero-gradient text-white shadow-[0_12px_28px_-10px_rgba(0,63,110,0.55)]">
-        <Icon className="h-7 w-7" />
-        <span className="absolute -right-1.5 -top-1.5 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white text-[11px] font-semibold text-sana-primary ring-2 ring-sana-accent font-mono">
-          {n}
-        </span>
+      <div className="flex items-start gap-4">
+        <div className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-hero-gradient text-white shadow-[0_12px_28px_-10px_rgba(0,63,110,0.55)]">
+          <Icon className="h-7 w-7" />
+          <span className="absolute -right-1.5 -top-1.5 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white text-[11px] font-semibold text-sana-primary ring-2 ring-sana-accent font-mono">
+            {n}
+          </span>
+        </div>
+        <div>
+          <h3 className="font-heading text-xl font-semibold text-sana-primary">
+            {title}
+          </h3>
+          <p className="mt-2 text-sm leading-relaxed text-sana-muted">{body}</p>
+        </div>
       </div>
-
-      <h3 className="mt-6 font-heading text-xl font-semibold text-sana-primary">
-        {title}
-      </h3>
-      <p className="mt-2 text-sm leading-relaxed text-sana-muted">{body}</p>
 
       <svg viewBox="0 0 200 30" className="mt-6 h-7 w-full" aria-hidden>
         <path

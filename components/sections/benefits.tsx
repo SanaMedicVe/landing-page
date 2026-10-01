@@ -141,7 +141,7 @@ export function Benefits() {
                     "border-sana-line bg-white text-sana-primary hover:border-sana-accent/40 hover:shadow-[0_18px_40px_-18px_rgba(0,63,110,0.18)]",
                 )}
               >
-                <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3">
                   <span
                     className={cn(
                       "inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl",
@@ -154,23 +154,27 @@ export function Benefits() {
                   >
                     <it.icon className="h-5 w-5" strokeWidth={2.2} />
                   </span>
-                  <ArrowUpRight
-                    className={cn(
-                      "h-4 w-4 -translate-x-1 translate-y-1 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100",
-                      it.tone === "primary"
-                        ? "text-white/70"
-                        : "text-sana-accent",
-                    )}
-                  />
+                  <div className="flex flex-1 items-start justify-between gap-3">
+                    <h3
+                      className={cn(
+                        "font-heading text-lg font-semibold sm:text-xl",
+                        it.tone === "primary"
+                          ? "text-white"
+                          : "text-sana-primary",
+                      )}
+                    >
+                      {it.title}
+                    </h3>
+                    <ArrowUpRight
+                      className={cn(
+                        "h-4 w-4 shrink-0 -translate-x-1 translate-y-1 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100",
+                        it.tone === "primary"
+                          ? "text-white/70"
+                          : "text-sana-accent",
+                      )}
+                    />
+                  </div>
                 </div>
-                <h3
-                  className={cn(
-                    "mt-5 font-heading text-lg font-semibold sm:text-xl",
-                    it.tone === "primary" ? "text-white" : "text-sana-primary",
-                  )}
-                >
-                  {it.title}
-                </h3>
                 <p
                   className={cn(
                     "mt-2 text-sm leading-relaxed sm:text-[15px]",

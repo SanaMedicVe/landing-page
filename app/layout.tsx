@@ -69,7 +69,11 @@ export const metadata: Metadata = {
     images: ["/og-sana.svg"],
   },
   icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon.png", type: "image/svg+xml" },
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    apple: [{ url: "/favicon.png", type: "image/png" }],
   },
   robots: {
     index: true,

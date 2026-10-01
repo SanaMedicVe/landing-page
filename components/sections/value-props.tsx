@@ -79,18 +79,20 @@ export function ValueProps() {
                     chip.color,
                   )}
                 />
-                <span
-                  className={cn(
-                    "inline-flex h-11 w-11 items-center justify-center rounded-xl text-white shadow-[0_8px_20px_-8px_rgba(0,63,110,0.4)]",
-                    "bg-gradient-to-br",
-                    chip.color,
-                  )}
-                >
-                  <chip.icon className="h-5 w-5" />
-                </span>
-                <p className="mt-4 font-medium leading-snug text-sana-primary">
-                  {chip.label}
-                </p>
+                <div className="flex items-start gap-3">
+                  <span
+                    className={cn(
+                      "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white shadow-[0_8px_20px_-8px_rgba(0,63,110,0.4)]",
+                      "bg-gradient-to-br",
+                      chip.color,
+                    )}
+                  >
+                    <chip.icon className="h-5 w-5" />
+                  </span>
+                  <p className="font-medium leading-snug text-sana-primary">
+                    {chip.label}
+                  </p>
+                </div>
                 <span
                   aria-hidden
                   className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-sana-accent transition-transform duration-500 group-hover:scale-x-100"

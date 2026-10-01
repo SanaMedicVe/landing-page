@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useReducedMotion, AnimatePresence } from "motion/react";
-import { Menu, X, Activity, Smartphone } from "lucide-react";
+import { Menu, X, Smartphone } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -57,22 +58,14 @@ export function Navbar() {
           aria-label="Sana — ir al inicio"
           className="group flex items-center gap-2.5 pl-1"
         >
-          <span className="relative inline-flex h-9 w-9 items-center justify-center rounded-xl bg-hero-gradient shadow-[0_4px_18px_-6px_rgba(0,63,110,0.55)]">
-            <Activity
-              className="h-4 w-4 text-white"
-              strokeWidth={2.4}
-              aria-hidden
-            />
-            <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-sana-accent ecg-blink" />
-          </span>
-          <span className="flex flex-col leading-none">
-            <span className="font-heading text-lg font-bold tracking-tight text-sana-primary">
-              Sana
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-sana-muted-soft">
-              pulso·digital
-            </span>
-          </span>
+          <Image
+            src="/logo/sana-logo-primary.svg"
+            alt="Sana"
+            width={120}
+            height={41}
+            priority
+            className="h-9 w-auto transition-opacity group-hover:opacity-90"
+          />
         </Link>
 
         {/* Anchors (md+) */}
