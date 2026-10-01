@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Open_Sans, Comfortaa, Geist_Mono, Geist } from "next/font/google";
+import { Comfortaa, Geist_Mono, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { CookieBanner } from "@/components/shared/cookie-banner";
 
 // Headings: Caviar Dreams. Como no está en Google Fonts, usamos Comfortaa
 // (mismo aire geométrico redondeado) y registramos el nombre real como
@@ -94,8 +95,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         geist.variable,
       )}
     >
-      <body className="min-h-full flex flex-col bg-white text-sana-primary selection:bg-sana-accent/40">
+      {/* `suppressHydrationWarning` es seguro aquí: el `<body>` aloja
+          el `<CookieBanner />` (Client Component) y el navegador puede
+          añadir atributos extra (p.ej. `cz-shortcut-listen`) que no
+          existen en el HTML del servidor. No afecta al contenido. */}
+      <body
+        className="min-h-full flex flex-col bg-white text-sana-primary selection:bg-sana-accent/40"
+        suppressHydrationWarning
+      >
         {children}
+        <CookieBanner />
       </body>
     </html>
   );

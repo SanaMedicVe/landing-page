@@ -5,9 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import {
   Smartphone,
-  Stethoscope,
   ArrowRight,
-  ShieldCheck,
   CalendarCheck,
   Video,
   Pill,

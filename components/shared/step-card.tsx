@@ -4,7 +4,7 @@ import * as React from "react";
 import type { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { useMounted } from "@/lib/use-reduced-motion";
+import { useMounted, useReducedMotion } from "@/lib/use-reduced-motion";
 
 type StepCardProps = {
   icon: LucideIcon;
@@ -15,11 +15,7 @@ type StepCardProps = {
 };
 
 export function StepCard({ icon: Icon, n, title, body, index }: StepCardProps) {
-  const reduced = React.useRef(
-    typeof window !== "undefined"
-      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      : false,
-  ).current;
+  const reduced = useReducedMotion();
   const mounted = useMounted();
 
   return (

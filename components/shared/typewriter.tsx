@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { useMounted } from "@/lib/use-reduced-motion";
 
 interface TypewriterProps {
   text: string;
@@ -31,11 +32,7 @@ export function Typewriter({
   caret = true,
 }: TypewriterProps) {
   const reduced = useReducedMotion();
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMounted();
 
   const chars = React.useMemo(() => Array.from(text), [text]);
 

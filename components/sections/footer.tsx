@@ -26,7 +26,7 @@ const COLS = [
     links: [
       { label: "Aviso de privacidad", href: "/aviso-de-privacidad" },
       { label: "Términos de servicio", href: "/terminos" },
-      { label: "Cookies", href: "/cookies" },
+      { label: "Cookies", href: "/aviso-de-privacidad#cookies" },
       { label: "Política de datos de salud", href: "/datos-de-salud" },
     ],
   },
