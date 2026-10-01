@@ -11,6 +11,11 @@ import {
   AppStoreBadge,
   GooglePlayBadge,
 } from "@/components/shared/store-badges";
+import {
+  externalLinkProps,
+  getDoctorLoginUrl,
+  getPatientAppUrl,
+} from "@/lib/links";
 
 export function FinalCta() {
   const reduced = useReducedMotion();
@@ -118,7 +123,10 @@ export function FinalCta() {
             variant="accent"
             className="beam-border group rounded-full"
           >
-            <Link href="#top">
+            <Link
+              href={getPatientAppUrl()}
+              {...externalLinkProps(getPatientAppUrl())}
+            >
               <Smartphone className="h-4 w-4" />
               Descargar la app gratis
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -137,10 +145,11 @@ export function FinalCta() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8"
+          className="mt-8 flex flex-col items-center gap-3"
         >
           <Link
-            href="#para-doctores"
+            href={getDoctorLoginUrl()}
+            {...externalLinkProps(getDoctorLoginUrl())}
             className="inline-flex items-center gap-2 text-sm text-white/65 transition-colors hover:text-sana-accent"
           >
             <Stethoscope className="h-4 w-4" />

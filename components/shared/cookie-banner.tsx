@@ -12,10 +12,14 @@ import { useMounted } from "@/lib/use-reduced-motion";
 /**
  * Banner de consentimiento de cookies.
  *
- * Aparece sólo cuando aún no hay una decisión persistida en
- * `localStorage`. Sana no utiliza cookies publicitarias de terceros:
- * la decisión documentada en /aviso-de-privacidad#cookies impacta
- * únicamente a cookies técnicas y de preferencias.
+ * Comportamiento esperado por producto:
+ *  - Al cargar la página, si el navegador ya tiene persistida una
+ *    decisión en `localStorage`, NO se muestra.
+ *  - Si no hay decisión, aparece abajo como una notificación hasta
+ *    que el visitante acepte o rechace.
+ *  - Sana no utiliza cookies publicitarias de terceros: la decisión
+ *    impacta únicamente a cookies técnicas y de preferencias. El
+ *    detalle está documentado en `/aviso-de-privacidad`.
  *
  * El banner se renderiza en el layout raíz, fuera de `<main>`, y se
  * posiciona de forma fija para no afectar al flujo del contenido.
@@ -62,15 +66,15 @@ export function CookieBanner() {
                 id="cookie-banner-desc"
                 className="mt-1 text-xs leading-relaxed text-sana-muted sm:text-sm"
               >
-                Sana guarda una preferencia en tu navegador para recordar
-                esta elección. No usamos cookies publicitarias. Más info en{" "}
+                Sana guarda una preferencia en tu navegador para recordar esta
+                elección. No usamos cookies publicitarias. Consulta el{" "}
                 <Link
-                  href="/aviso-de-privacidad#cookies"
+                  href="/aviso-de-privacidad"
                   className="font-medium text-sana-accent-700 underline-offset-4 hover:underline"
                 >
-                  Aviso de privacidad
-                </Link>
-                .
+                  aviso de privacidad
+                </Link>{" "}
+                para más detalles.
               </p>
 
               <div className="mt-3 flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-end">

@@ -1,9 +1,21 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import {
+  externalLinkProps,
+  getPatientAppAndroidUrl,
+  getPatientAppIosUrl,
+} from "@/lib/links";
 
 type StoreBadgeProps = {
   className?: string;
+  /**
+   * URL destino. Si se omite, se obtiene del helper centralizado
+   * (`lib/links.ts`) que lee `NEXT_PUBLIC_PATIENT_APP_*_URL` y, en
+   * su defecto, devuelve un `mailto:` como último fallback seguro
+   * para que la badge nunca quede como enlace muerto.
+   */
+  href?: string;
 };
 
 /**
@@ -11,11 +23,13 @@ type StoreBadgeProps = {
  * Reproduce el rectángulo redondeado negro con el logo de Apple
  * y el texto "Disponible en el App Store".
  */
-export function AppStoreBadge({ className }: StoreBadgeProps) {
+export function AppStoreBadge({ className, href }: StoreBadgeProps) {
+  const target = href ?? getPatientAppIosUrl();
   return (
     <a
-      href="#"
+      href={target}
       aria-label="Descargar en el App Store"
+      {...externalLinkProps(target)}
       className={cn(
         "inline-flex h-12 items-center gap-3 rounded-xl bg-black px-4 text-white transition-opacity hover:opacity-90",
         className,
@@ -46,11 +60,13 @@ export function AppStoreBadge({ className }: StoreBadgeProps) {
  * Badge oficial de Google Play.
  * Reproduce el rectángulo negro con el logo del triángulo y el texto "Disponible en Google Play".
  */
-export function GooglePlayBadge({ className }: StoreBadgeProps) {
+export function GooglePlayBadge({ className, href }: StoreBadgeProps) {
+  const target = href ?? getPatientAppAndroidUrl();
   return (
     <a
-      href="#"
+      href={target}
       aria-label="Descargar en Google Play"
+      {...externalLinkProps(target)}
       className={cn(
         "inline-flex h-12 items-center gap-3 rounded-xl bg-black px-4 text-white transition-opacity hover:opacity-90",
         className,

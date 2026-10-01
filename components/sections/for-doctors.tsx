@@ -3,12 +3,17 @@
 import * as React from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LogIn, MailPlus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 import { DashboardMockup } from "@/components/shared/dashboard-mockup";
 import { useMounted } from "@/lib/use-reduced-motion";
+import {
+  externalLinkProps,
+  getDoctorLoginUrl,
+  getDoctorOnboardingUrl,
+} from "@/lib/links";
 
 const BULLETS = [
   {
@@ -170,14 +175,48 @@ export function ForDoctors() {
               variant="primary"
               className="rounded-full"
             >
-              <Link href="#cta-doctores">
-                Quiero unirme a Sana
-                <ArrowRight className="h-4 w-4" />
+              <Link
+                href={getDoctorOnboardingUrl()}
+                {...externalLinkProps(getDoctorOnboardingUrl())}
+              >
+                <MailPlus className="h-4 w-4" />
+                Solicitar onboarding
               </Link>
             </Button>
-            <Button asChild size="lg" variant="ghost" className="rounded-full">
-              <Link href="#doctor-verificado">Ver proceso de verificación</Link>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-full"
+            >
+              <Link
+                href={getDoctorLoginUrl()}
+                {...externalLinkProps(getDoctorLoginUrl())}
+              >
+                <LogIn className="h-4 w-4" />
+                Ya soy doctor · Login
+              </Link>
             </Button>
+          </motion.div>
+
+          <motion.div
+            initial={!mounted ? false : reduced ? false : { opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{
+              duration: 0.6,
+              delay: 0.05,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="mt-3"
+          >
+            <Link
+              href="#doctor-verificado"
+              className="inline-flex items-center gap-2 text-sm text-sana-primary/80 transition-colors hover:text-sana-accent-700"
+            >
+              Ver proceso de verificación
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </motion.div>
         </div>
       </div>

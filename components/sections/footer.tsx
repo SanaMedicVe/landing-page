@@ -10,6 +10,14 @@ import {
   XGlyph,
   LinkedinGlyph,
 } from "@/components/shared/social-icons";
+import {
+  externalLinkProps,
+  getContactMail,
+  getSocialInstagramUrl,
+  getSocialLinkedinUrl,
+  getSocialXUrl,
+  mailto,
+} from "@/lib/links";
 
 const COLS = [
   {
@@ -26,17 +34,18 @@ const COLS = [
     links: [
       { label: "Aviso de privacidad", href: "/aviso-de-privacidad" },
       { label: "Términos de servicio", href: "/terminos" },
-      { label: "Cookies", href: "/aviso-de-privacidad#cookies" },
       { label: "Política de datos de salud", href: "/datos-de-salud" },
     ],
   },
   {
     title: "Compañía",
     links: [
-      { label: "Sobre Sana", href: "/sobre" },
       { label: "Doctor Verificado", href: "#doctor-verificado" },
       { label: "Preguntas frecuentes", href: "#faq" },
-      { label: "Contacto", href: "mailto:hola@sana.lat" },
+      {
+        label: "Contacto",
+        href: mailto(getContactMail(), "Contacto desde la landing"),
+      },
     ],
   },
 ];
@@ -69,20 +78,7 @@ export function Footer() {
               plataforma — diseñada para LATAM.
             </p>
 
-            <div className="mt-6 flex items-center gap-3">
-              <SocialIcon href="#" label="Instagram">
-                <InstagramGlyph />
-              </SocialIcon>
-              <SocialIcon href="#" label="X (Twitter)">
-                <XGlyph />
-              </SocialIcon>
-              <SocialIcon href="#" label="LinkedIn">
-                <LinkedinGlyph />
-              </SocialIcon>
-              <SocialIcon href="mailto:hola@sana.lat" label="Correo">
-                <Mail className="h-4 w-4" />
-              </SocialIcon>
-            </div>
+            <SocialRow />
           </div>
 
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
@@ -92,16 +88,20 @@ export function Footer() {
                   {col.title}
                 </p>
                 <ul className="mt-4 space-y-3">
-                  {col.links.map((l) => (
-                    <li key={l.label}>
-                      <Link
-                        href={l.href}
-                        className="text-sm text-white/65 transition-colors hover:text-sana-accent"
-                      >
-                        {l.label}
-                      </Link>
-                    </li>
-                  ))}
+                  {col.links.map((l) => {
+                    const ext = externalLinkProps(l.href);
+                    return (
+                      <li key={l.label}>
+                        <Link
+                          href={l.href}
+                          {...ext}
+                          className="text-sm text-white/65 transition-colors hover:text-sana-accent"
+                        >
+                          {l.label}
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             ))}
@@ -133,6 +133,44 @@ export function Footer() {
   );
 }
 
+/**
+ * Fila de iconos sociales: cada red sólo se renderiza si la URL
+ * correspondiente está configurada por env var. Así evitamos
+ * enlaces muertos (`#`) mientras la marca no tenga perfiles.
+ */
+function SocialRow() {
+  const instagram = getSocialInstagramUrl();
+  const x = getSocialXUrl();
+  const linkedin = getSocialLinkedinUrl();
+  const mail = getContactMail();
+
+  return (
+    <div className="mt-6 flex items-center gap-3">
+      {instagram && (
+        <SocialIcon href={instagram} label="Instagram">
+          <InstagramGlyph />
+        </SocialIcon>
+      )}
+      {x && (
+        <SocialIcon href={x} label="X (Twitter)">
+          <XGlyph />
+        </SocialIcon>
+      )}
+      {linkedin && (
+        <SocialIcon href={linkedin} label="LinkedIn">
+          <LinkedinGlyph />
+        </SocialIcon>
+      )}
+      <SocialIcon
+        href={mailto(mail, "Contacto desde la landing")}
+        label="Correo"
+      >
+        <Mail className="h-4 w-4" />
+      </SocialIcon>
+    </div>
+  );
+}
+
 function SocialIcon({
   href,
   label,
@@ -146,6 +184,7 @@ function SocialIcon({
     <Link
       href={href}
       aria-label={label}
+      {...externalLinkProps(href)}
       className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/75 transition-colors hover:bg-sana-accent hover:text-sana-night-900"
     >
       {children}

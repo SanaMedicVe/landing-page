@@ -9,6 +9,37 @@ doctores verificados en LATAM.
 
 ---
 
+## Configuración de URLs externas
+
+Todos los CTAs que salen de la landing (stores, login de doctores, redes
+sociales, mails de contacto) leen sus URLs desde variables de entorno
+públicas (`NEXT_PUBLIC_*`). Mientras la app no esté publicada o el login
+de doctores no exista, los CTAs caen a `mailto:` seguros como último
+fallback para que ningún enlace quede muerto.
+
+Variables soportadas (todas opcionales; el helper en `lib/links.ts`
+aplica fallback automático):
+
+| Variable | Uso | Fallback |
+| --- | --- | --- |
+| `NEXT_PUBLIC_PATIENT_APP_IOS_URL` | App Store iOS | `mailto:app@sana.lat` |
+| `NEXT_PUBLIC_PATIENT_APP_ANDROID_URL` | Google Play | `mailto:app@sana.lat` |
+| `NEXT_PUBLIC_PATIENT_APP_URL` | URL única de la app | `NEXT_PUBLIC_PATIENT_APP_IOS_URL` |
+| `NEXT_PUBLIC_DOCTOR_LOGIN_URL` | Login panel clínico | `mailto:doctores@sana.lat` |
+| `NEXT_PUBLIC_DOCTOR_ONBOARDING_URL` | Formulario onboarding | `mailto:doctores@sana.lat` |
+| `NEXT_PUBLIC_SOCIAL_INSTAGRAM_URL` | Footer | (icono oculto si vacío) |
+| `NEXT_PUBLIC_SOCIAL_X_URL` | Footer | (icono oculto si vacío) |
+| `NEXT_PUBLIC_SOCIAL_LINKEDIN_URL` | Footer | (icono oculto si vacío) |
+| `NEXT_PUBLIC_CONTACT_MAIL` | Mail principal | `hola@sana.lat` |
+| `NEXT_PUBLIC_DOCTOR_CONTACT_MAIL` | Mail doctores | `doctores@sana.lat` |
+| `NEXT_PUBLIC_LEGAL_MAIL` | Mail legal | `legal@sana.lat` |
+| `NEXT_PUBLIC_PRIVACY_MAIL` | Mail privacidad | `privacidad@sana.lat` |
+
+> **Importante:** cualquier URL externa añadida con estas variables se
+> renderiza con `target="_blank"` y `rel="noopener noreferrer"`.
+
+---
+
 ## Stack técnico
 
 - **Next.js 16.3** (App Router + Turbopack)
@@ -41,7 +72,7 @@ una **línea ECG horizontal persistente** que recorre toda la página,
 cambiando su silueta según la sección visible.
 
 | Sección | Mood del ECG | Sensación |
-|---|---|---|
+| --- | --- | --- |
 | Hero | `calm-night` | Pulso tranquilo nocturno |
 | Cómo funciona | `steady` | Ritmo regular |
 | Para pacientes / doctores | `calm` | Picos uniformes |
