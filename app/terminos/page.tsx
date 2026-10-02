@@ -11,6 +11,41 @@ export const metadata: Metadata = {
   title: "Términos de servicio",
   description:
     "Reglas de uso de Sana: lo que Sana te ofrece, lo que esperamos de ti, y qué ocurre si algo no funciona como debería.",
+  alternates: {
+    canonical: "/terminos",
+    languages: {
+      "es-419": "/terminos",
+      es: "/terminos",
+    },
+  },
+  openGraph: {
+    type: "article",
+    url: "/terminos",
+    title: "Términos de servicio | Sana",
+    description:
+      "Reglas de uso de Sana: lo que Sana te ofrece, lo que esperamos de ti, y qué ocurre si algo no funciona como debería.",
+    siteName: "Sana",
+    locale: "es_LA",
+    images: [
+      {
+        url: "/og-sana.png",
+        width: 1200,
+        height: 630,
+        alt: "Sana — términos de servicio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Términos de servicio | Sana",
+    description:
+      "Reglas de uso de Sana: lo que Sana te ofrece, lo que esperamos de ti, y qué ocurre si algo no funciona como debería.",
+    images: ["/og-sana.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 const COMPROMISOS_SANA = [

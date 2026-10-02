@@ -19,6 +19,37 @@ export const metadata: Metadata = {
   title: "Sana — Tu salud, conectada en tiempo real",
   description:
     "Pacientes y doctores verificados, conectados en una sola plataforma — diseñada para LATAM.",
+  alternates: {
+    canonical: "/",
+    languages: {
+      "es-419": "/",
+      es: "/",
+    },
+  },
+  openGraph: {
+    type: "website",
+    url: "/",
+    title: "Sana — Tu salud, conectada en tiempo real",
+    description:
+      "Pacientes y doctores verificados, conectados en una sola plataforma — diseñada para LATAM.",
+    siteName: "Sana",
+    locale: "es_LA",
+    images: [
+      {
+        url: "/og-sana.png",
+        width: 1200,
+        height: 630,
+        alt: "Sana — tu salud, conectada en tiempo real",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sana — Tu salud, conectada en tiempo real",
+    description:
+      "Pacientes y doctores verificados, conectados en una sola plataforma — diseñada para LATAM.",
+    images: ["/og-sana.png"],
+  },
 };
 
 export default function Home() {

@@ -68,8 +68,10 @@ export function Footer() {
               <Image
                 src="/logo/sana-logo-primary.svg"
                 alt="Sana"
-                width={1574.41}
-                height={537.44}
+                width={120}
+                height={41}
+                sizes="120px"
+                loading="lazy"
                 className="h-9 w-auto brightness-0 invert"
               />
             </Link>

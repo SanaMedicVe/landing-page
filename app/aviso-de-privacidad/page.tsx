@@ -10,6 +10,41 @@ export const metadata: Metadata = {
   title: "Aviso de privacidad",
   description:
     "Cómo Sana trata los datos personales de pacientes y profesionales: qué recopilamos, para qué los usamos y cómo ejercer tus derechos.",
+  alternates: {
+    canonical: "/aviso-de-privacidad",
+    languages: {
+      "es-419": "/aviso-de-privacidad",
+      es: "/aviso-de-privacidad",
+    },
+  },
+  openGraph: {
+    type: "article",
+    url: "/aviso-de-privacidad",
+    title: "Aviso de privacidad | Sana",
+    description:
+      "Cómo Sana trata los datos personales de pacientes y profesionales: qué recopilamos, para qué los usamos y cómo ejercer tus derechos.",
+    siteName: "Sana",
+    locale: "es_LA",
+    images: [
+      {
+        url: "/og-sana.png",
+        width: 1200,
+        height: 630,
+        alt: "Sana — aviso de privacidad",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aviso de privacidad | Sana",
+    description:
+      "Cómo Sana trata los datos personales de pacientes y profesionales: qué recopilamos, para qué los usamos y cómo ejercer tus derechos.",
+    images: ["/og-sana.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 const IDENTIDAD = [

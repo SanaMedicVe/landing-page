@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import { StructuredData } from "@/components/shared/structured-data";
 
 const FAQS = [
   {
@@ -43,6 +44,23 @@ const FAQS = [
   },
 ];
 
+/**
+ * Schema.org FAQPage para que Google pueda renderizar rich snippets
+ * con las 8 preguntas del acordeón.
+ */
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: f.a,
+    },
+  })),
+};
+
 export function Faq() {
   return (
     <section
@@ -50,6 +68,7 @@ export function Faq() {
       aria-labelledby="faq-heading"
       className="relative isolate overflow-hidden bg-white py-20 sm:py-28"
     >
+      <StructuredData id="ld-faq" schema={faqSchema} />
       <div className="mx-auto max-w-3xl px-5 lg:px-8">
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-sana-primary/15 bg-white px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-sana-primary">

@@ -190,7 +190,7 @@ Orden estricto en `app/page.tsx`:
 │   └── use-reduced-motion.ts
 ├── public/
 │   ├── icon.svg             # favicon
-│   └── og-sana.svg          # Open Graph 1200×630
+│   └── og-sana.png          # Open Graph 1200×630
 ├── components.json          # config shadcn
 ├── next.config.ts
 ├── package.json

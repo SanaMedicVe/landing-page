@@ -10,6 +10,41 @@ export const metadata: Metadata = {
   title: "Política de datos de salud",
   description:
     "Cómo Sana trata la información clínica sensible: cifrado, control de acceso, retención y derechos del paciente.",
+  alternates: {
+    canonical: "/datos-de-salud",
+    languages: {
+      "es-419": "/datos-de-salud",
+      es: "/datos-de-salud",
+    },
+  },
+  openGraph: {
+    type: "article",
+    url: "/datos-de-salud",
+    title: "Política de datos de salud | Sana",
+    description:
+      "Cómo Sana trata la información clínica sensible: cifrado, control de acceso, retención y derechos del paciente.",
+    siteName: "Sana",
+    locale: "es_LA",
+    images: [
+      {
+        url: "/og-sana.png",
+        width: 1200,
+        height: 630,
+        alt: "Sana — política de datos de salud",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Política de datos de salud | Sana",
+    description:
+      "Cómo Sana trata la información clínica sensible: cifrado, control de acceso, retención y derechos del paciente.",
+    images: ["/og-sana.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 const PRINCIPIOS = [
