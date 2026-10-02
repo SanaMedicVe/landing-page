@@ -1,38 +1,7 @@
 "use client";
 
-/**
- * Capa fina sobre @segment/analytics-next.
- *
- * Responsabilidades:
- *  1. Inicialización perezosa: la instancia de Segment sólo se carga
- *     en el cliente, una vez por sesión, y solo si el visitante
- *     aceptó cookies (o si el consentimiento aún no fue solicitado,
- *     en cuyo caso respetamos un modo "essential" sin tracking).
- *  2. Whitelist de eventos y props: cualquier `track()` con un evento
- *     o propiedad fuera de las listas blancas se descarta (fail-closed)
- *     para impedir fugas accidentales de PHI o tokens.
- *  3. Kill-switch vía env var (`NEXT_PUBLIC_ANALYTICS_ENABLED=false`)
- *     para apagar el tracking en staging/preview sin tocar código.
- *
- * Restricciones de privacidad (alineadas con el aviso de privacidad
- * de Sana y con el ticket "Métricas mínimas de uso público"):
- *  - No se captura PHI (no se leen inputs, URL, localStorage, headers).
- *  - No se reenvían URLs con tokens; las props se sanitizan.
- *  - `track()` es no-op cuando `consent === "rejected"`.
- *  - `landing_visit` se envía como máximo una vez por sesión
- *    (clave `sana:analytics:visited.v1` en sessionStorage).
- */
-
 import type { Analytics } from "@segment/analytics-next";
 
-// ─────────────────────────────────────────────────────────────────────
-//  Tipos públicos (whitelist)
-// ─────────────────────────────────────────────────────────────────────
-
-/**
- * Eventos públicos definidos por el ticket.
- * Mantener esta lista alineada con la sección "Analítica" del README.
- */
 export const ANALYTICS_EVENTS = [
   "landing_visit",
   "patient_cta",
@@ -42,17 +11,8 @@ export const ANALYTICS_EVENTS = [
 
 export type AnalyticsEvent = (typeof ANALYTICS_EVENTS)[number];
 
-/**
- * Audience = canal de conversión. Permite distinguir Doctor/Patient
- * en los dashboards de Segment (criterio de aceptación del ticket).
- */
 export type AnalyticsAudience = "patient" | "doctor" | "contact";
 
-/**
- * Clasificación del enlace destino. NO se envía la URL completa:
- * sólo el "tipo", para evitar fugar tokens de un solo uso o query
- * strings con datos sensibles.
- */
 export type AnalyticsTargetKind =
   | "app_store_ios"
   | "app_store_android"
@@ -66,10 +26,6 @@ export type AnalyticsTargetKind =
   | "anchor"
   | "external";
 
-/**
- * Props permitidas en cada evento. Whitelist cerrada — si la prop
- * no está aquí, `track()` la descarta silenciosamente.
- */
 export const ALLOWED_PROPS: Readonly<
   Record<AnalyticsEvent, readonly string[]>
 > = {
@@ -83,24 +39,16 @@ export type AnalyticsProps = Readonly<
   Record<string, string | number | boolean>
 >;
 
-// ─────────────────────────────────────────────────────────────────────
-//  Configuración desde env
-// ─────────────────────────────────────────────────────────────────────
-
 function env() {
   return process.env as Record<string, string | undefined>;
 }
 
-/** Kill-switch global. Por defecto, apagado en desarrollo. */
 export function isAnalyticsEnabled(): boolean {
   const flag = env().NEXT_PUBLIC_ANALYTICS_ENABLED;
-  // Default: sólo activo en producción. Forzar a "true" en staging
-  // si se necesita validar el cableado antes del go-live.
   if (flag === undefined) return env().NODE_ENV === "production";
   return flag === "true" || flag === "1";
 }
 
-/** Write key pública de Segment. Si falta, `track()` es no-op. */
 export function getSegmentWriteKey(): string | undefined {
   const key = env().NEXT_PUBLIC_SEGMENT_WRITE_KEY;
   return typeof key === "string" && key.trim().length > 0
@@ -124,8 +72,6 @@ export function classifyHref(href: string | undefined): AnalyticsTargetKind {
   if (h.includes("instagram.com")) return "social_instagram";
   if (h.includes("twitter.com") || h.includes("x.com")) return "social_x";
   if (h.includes("linkedin.com")) return "social_linkedin";
-  // Detección laxa del login de doctores: cualquier dominio que
-  // contenga "doctor" + "login" o esté marcado por env var.
   const doctorLogin = env().NEXT_PUBLIC_DOCTOR_LOGIN_URL?.toLowerCase() ?? "";
   const doctorOnb =
     env().NEXT_PUBLIC_DOCTOR_ONBOARDING_URL?.toLowerCase() ?? "";
@@ -135,14 +81,8 @@ export function classifyHref(href: string | undefined): AnalyticsTargetKind {
   if (doctorOnb && h.startsWith(doctorOnb.split("?")[0])) {
     return "doctor_onboarding";
   }
-  // Paciente "genérico": si es http(s) y no es doctor ni tienda, asumimos
-  // link unificado de la app (ej. landing web de Sana).
   return "app_store_generic";
 }
-
-// ─────────────────────────────────────────────────────────────────────
-//  Sanitización de props
-// ─────────────────────────────────────────────────────────────────────
 
 const FORBIDDEN_PATTERNS = [
   /\?token=/i,
@@ -177,10 +117,6 @@ function sanitizeProps(
   return out;
 }
 
-// ─────────────────────────────────────────────────────────────────────
-//  Consentimiento (lee el estado existente; NO lo muta)
-// ─────────────────────────────────────────────────────────────────────
-
 type ConsentState = "accepted" | "rejected" | undefined;
 
 function readConsent(): ConsentState {
@@ -194,23 +130,9 @@ function readConsent(): ConsentState {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────
-//  Singleton perezoso del cliente Segment
-// ─────────────────────────────────────────────────────────────────────
-
 let analyticsPromise: Promise<Analytics | null> | null = null;
 let analyticsInstance: Analytics | null = null;
 
-/**
- * Carga Segment sólo cuando:
- *  - hay consentimiento `accepted`, o
- *  - el banner aún no se mostró (modo "essential": sin tracking aún,
- *    para no perder el evento si el usuario acepta después).
- *
- * Se opta por `load()` con `integrations` vacío en el consentimiento
- * "rejected": `load()` igual inicializa la instancia local, pero
- * `track()` aborta antes de llamar a `analytics.track`.
- */
 async function getAnalytics(): Promise<Analytics | null> {
   if (!isAnalyticsEnabled()) return null;
   const writeKey = getSegmentWriteKey();
@@ -236,10 +158,6 @@ async function getAnalytics(): Promise<Analytics | null> {
   return analyticsPromise;
 }
 
-// ─────────────────────────────────────────────────────────────────────
-//  Anti-duplicado para `landing_visit` (1 vez por sesión)
-// ─────────────────────────────────────────────────────────────────────
-
 const VISITED_KEY = "sana:analytics:visited.v1";
 
 function alreadyVisitedThisSession(): boolean {
@@ -262,16 +180,6 @@ function markVisitedThisSession() {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────
-//  API pública
-// ─────────────────────────────────────────────────────────────────────
-
-/**
- * Envía un evento de analítica. Función fire-and-forget:
- *  - Nunca lanza excepciones al caller.
- *  - Devuelve una promesa que el caller puede ignorar.
- *  - Si el consentimiento es "rejected", no hace nada.
- */
 export async function track(
   event: AnalyticsEvent,
   props?: AnalyticsProps,
@@ -279,15 +187,11 @@ export async function track(
   if (!isAnalyticsEnabled()) return;
   if (!(ANALYTICS_EVENTS as readonly string[]).includes(event)) return;
 
-  // Gate por consentimiento. Sólo `accepted` permite emitir.
-  // Antes de la decisión del visitante (consent === undefined) tampoco
-  // enviamos: el `landing_visit` se reintentará al aceptar.
   const consent = readConsent();
   if (consent !== "accepted") return;
 
   const safe = sanitizeProps(event, props);
 
-  // Anti-duplicado de session para `landing_visit`.
   if (event === "landing_visit") {
     if (alreadyVisitedThisSession()) return;
     markVisitedThisSession();
@@ -302,10 +206,6 @@ export async function track(
   }
 }
 
-/**
- * Inicializa Segment (lazy). Llamar una vez al montar el provider
- * para precargar el SDK y reducir el TTFB del primer `track()`.
- */
 export async function initAnalytics(): Promise<void> {
   if (!isAnalyticsEnabled()) return;
   await getAnalytics();

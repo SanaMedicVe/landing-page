@@ -3,27 +3,8 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-/**
- * Wrapper compartido para todas las páginas legales.
- *
- * Server Component: las páginas legales son contenido indexable y
- * deben renderizar HTML en el servidor para SEO. Por eso evitamos
- * `<Button asChild>` (que introduce una `render` prop incompatible
- * con el modelo de Server Components) y estilizamos los CTAs
- * directamente con Tailwind.
- *
- * Mantiene coherencia visual con la landing:
- *  - fondo blanco con halo cian sutil
- *  - tipografía heading + sans
- *  - paleta SANA (sin claims regulatorios: copy factual)
- *  - accesibilidad: jerarquía h1/h2/h3, links focusables, fecha de
- *    "última actualización" visible para que el equipo Legal pueda
- *    auditarla.
- */
-
 type Crumb = { label: string; href?: string };
 
-// Estilos alineados con `Button` variant="ghost" size="sm" + pill.
 const ctaClasses =
   "mt-3 inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[0.8rem] font-medium text-sana-primary transition-colors hover:bg-sana-primary-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sana-accent/40";
 
@@ -44,7 +25,6 @@ export function LegalShell({
 }) {
   return (
     <article className="relative isolate overflow-hidden bg-white pt-28 pb-20 sm:pt-36 sm:pb-28 lg:pt-40 lg:pb-32">
-      {/* Halo cian sutil — coherente con el resto de la landing */}
       <div
         aria-hidden
         className="pointer-events-none absolute -top-32 left-1/2 h-[420px] w-[680px] -translate-x-1/2 rounded-full bg-sana-accent/10 blur-[140px]"
@@ -94,9 +74,14 @@ export function LegalShell({
         )}
 
         <p className="mt-6 inline-flex items-center gap-2 rounded-full border border-sana-line bg-white px-3 py-1 text-xs text-sana-muted">
-          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-sana-accent" />
+          <span
+            aria-hidden
+            className="h-1.5 w-1.5 rounded-full bg-sana-accent"
+          />
           Última actualización:{" "}
-          <strong className="font-medium text-sana-primary">{lastUpdated}</strong>
+          <strong className="font-medium text-sana-primary">
+            {lastUpdated}
+          </strong>
         </p>
 
         <div className="mt-12 space-y-12 text-[15px] leading-relaxed text-sana-muted sm:text-base">
@@ -126,10 +111,6 @@ export function LegalShell({
   );
 }
 
-/**
- * Bloques <section> con título + contenido. Usar siempre h2 para mantener
- * jerarquía correcta bajo el h1 del shell.
- */
 export function LegalSection({
   id,
   title,
@@ -153,11 +134,7 @@ export function LegalSection({
   );
 }
 
-export function LegalList({
-  items,
-}: {
-  items: { t: string; d?: string }[];
-}) {
+export function LegalList({ items }: { items: { t: string; d?: string }[] }) {
   return (
     <ul className="grid gap-2">
       {items.map((it, i) => (
@@ -195,8 +172,7 @@ export function LegalCallout({
         "rounded-2xl border p-4 text-sm leading-relaxed",
         tone === "info" &&
           "border-sana-accent/30 bg-sana-accent-50 text-sana-primary",
-        tone === "warning" &&
-          "border-amber-300 bg-amber-50 text-amber-900",
+        tone === "warning" && "border-amber-300 bg-amber-50 text-amber-900",
       )}
     >
       {children}

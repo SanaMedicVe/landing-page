@@ -11,12 +11,6 @@ export const metadata = {
   },
 };
 
-/**
- * Página 404. Server Component: usamos <Link> con clases directas en
- * lugar del componente Button para evitar pasar funciones a Client
- * Components durante el prerender de Next 16 (que se queja cuando
- * un Server Component anida Client Components con `asChild`).
- */
 export default function NotFound() {
   return (
     <>

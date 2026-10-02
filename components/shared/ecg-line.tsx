@@ -3,18 +3,6 @@
 import * as React from "react";
 import { useReducedMotion, useMounted } from "@/lib/use-reduced-motion";
 
-/**
- * Línea ECG horizontal persistente que recorre toda la página.
- * Cambia su forma (mood) según la sección en la que se encuentre.
- *
- * Implementación: SVG con un path que se repite horizontalmente.
- * El "mood" define el patrón de picos. La posición Y se interpola
- * con scroll para que la línea parezca moverse a través del documento.
- *
- * También expone un "traveling pulse" — un punto cian que recorre la
- * línea como un latido, sincronizado a ~60bpm (1s).
- */
-
 export type EcgMood = "chaotic" | "calm" | "steady" | "flat" | "calm-night";
 
 interface EcgLineProps {

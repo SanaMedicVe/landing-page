@@ -44,10 +44,6 @@ const FAQS = [
   },
 ];
 
-/**
- * Schema.org FAQPage para que Google pueda renderizar rich snippets
- * con las 8 preguntas del acordeón.
- */
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",

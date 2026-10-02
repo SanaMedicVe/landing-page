@@ -2,23 +2,6 @@
 
 import * as React from "react";
 
-/**
- * Gestión de consentimiento de cookies en localStorage.
- *
- * Estados posibles:
- *  - "accepted"  → el usuario aceptó todas las cookies
- *  - "rejected"  → el usuario rechazó cookies no esenciales
- *  - undefined   → aún no hay decisión (mostrar banner)
- *
- * Sana no usa cookies publicitarias de terceros, así que la decisión
- * impacta únicamente a cookies técnicas y de preferencias. Se documenta
- * en /aviso-de-privacidad#cookies.
- *
- * Se emite `sana:cookies-changed` en `window` cada vez que cambia el
- * consentimiento. Otros consumidores pueden suscribirse para reaccionar
- * sin acoplarse a `localStorage`.
- */
-
 export type CookieConsent = "accepted" | "rejected";
 
 const STORAGE_KEY = "sana.cookie-consent.v1";
@@ -63,12 +46,6 @@ export function getCookieConsent(): CookieConsent | undefined {
 export function setCookieConsent(value: CookieConsent) {
   writeConsent(value);
 }
-
-// ─────────────────────────────────────────────────────────────────────
-// Hook de suscripción — `useSyncExternalStore` (mismo patrón que
-// `useReducedMotion`). Evita `setState` en effect, requerido por la
-// regla `react-hooks/set-state-in-effect` de Next 16 / React 19.
-// ─────────────────────────────────────────────────────────────────────
 
 function subscribe(callback: () => void) {
   if (typeof window === "undefined") return () => {};

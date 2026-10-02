@@ -136,11 +136,6 @@ export function Footer() {
   );
 }
 
-/**
- * Fila de iconos sociales: cada red sólo se renderiza si la URL
- * correspondiente está configurada por env var. Así evitamos
- * enlaces muertos (`#`) mientras la marca no tenga perfiles.
- */
 function SocialRow() {
   const instagram = getSocialInstagramUrl();
   const x = getSocialXUrl();
@@ -183,8 +178,6 @@ function SocialIcon({
   label: string;
   children: React.ReactNode;
 }) {
-  // El footer dispara `contact_cta` para cualquier enlace de contacto
-  // (mailto o redes). No se envía la URL completa: sólo el tipo.
   const kind = classifyHref(href);
   const channel: string =
     kind === "mailto"

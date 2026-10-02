@@ -11,45 +11,37 @@ import { useMounted } from "@/lib/use-reduced-motion";
 
 type AnyMotionComponent = React.ComponentType<Record<string, unknown>>;
 
-/**
- * `motion` SSR-safe: hasta que el componente esté montado en cliente,
- * todas las props de animación (`initial`, `animate`, `whileInView`, etc.)
- * se tratan como inertes para que el HTML del servidor coincida con el
- * primer render del cliente. Tras el mount, las animaciones funcionan
- * normalmente y se respeta `prefers-reduced-motion`.
- */
 export function createSafeMotion<Tag extends keyof HTMLElementTagNameMap>(
-  tag: Tag
+  tag: Tag,
 ) {
   type Props = HTMLMotionProps<Tag> & { children?: React.ReactNode };
 
   const MotionAny = motion(tag) as unknown as AnyMotionComponent;
 
-  const SafeMotion = React.forwardRef<unknown, Props>(function SafeMotion(
-    props,
-    ref
-  ) {
-    const { initial, animate, whileInView, whileHover, whileTap, ...rest } =
-      props as Props;
-    const mounted = useMounted();
-    const reduced = useReducedMotion();
+  const SafeMotion = React.forwardRef<unknown, Props>(
+    function SafeMotion(props, ref) {
+      const { initial, animate, whileInView, whileHover, whileTap, ...rest } =
+        props as Props;
+      const mounted = useMounted();
+      const reduced = useReducedMotion();
 
-    if (!mounted || reduced) {
-      return <MotionAny ref={ref as React.Ref<unknown>} {...rest} />;
-    }
+      if (!mounted || reduced) {
+        return <MotionAny ref={ref as React.Ref<unknown>} {...rest} />;
+      }
 
-    return (
-      <MotionAny
-        ref={ref as React.Ref<unknown>}
-        initial={initial}
-        animate={animate}
-        whileInView={whileInView}
-        whileHover={whileHover}
-        whileTap={whileTap}
-        {...rest}
-      />
-    );
-  });
+      return (
+        <MotionAny
+          ref={ref as React.Ref<unknown>}
+          initial={initial}
+          animate={animate}
+          whileInView={whileInView}
+          whileHover={whileHover}
+          whileTap={whileTap}
+          {...rest}
+        />
+      );
+    },
+  );
 
   return SafeMotion;
 }

@@ -4,18 +4,6 @@ import * as React from "react";
 
 import { track } from "@/lib/analytics";
 
-/**
- * Dispara el evento `landing_visit` una vez por sesión, cuando:
- *  - el componente monta en el cliente, y
- *  - el visitante ya aceptó cookies (consent === "accepted").
- *
- * Si el visitante aún no decidió, el evento NO se emite ahora: se
- * vuelve a intentar cuando el banner emite `sana:cookies-changed`
- * y la decisión pasa a "accepted".
- *
- * Está separado del `<AnalyticsProvider />` para que `track()` se
- * llame sólo cuando sepamos que el consentimiento permite emitir.
- */
 export function AnalyticsBoot() {
   React.useEffect(() => {
     let cancelled = false;

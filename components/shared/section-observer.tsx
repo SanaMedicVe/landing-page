@@ -8,10 +8,6 @@ export interface SectionMood {
   threshold?: number;
 }
 
-/**
- * Devuelve el id de la sección visible actualmente, basado en thresholds
- * relativos al viewport. Útil para mutar el mood del ECG global.
- */
 export function useActiveSection(sectionIds: string[]): string {
   const [active, setActive] = React.useState<string>(sectionIds[0] ?? "");
   // Clave estable para evitar deps complejas en useEffect
@@ -41,7 +37,7 @@ export function useActiveSection(sectionIds: string[]): string {
           });
           if (bestRatio > 0) setActive(bestId);
         },
-        { threshold: [0, 0.25, 0.5, 0.75, 1] }
+        { threshold: [0, 0.25, 0.5, 0.75, 1] },
       );
       obs.observe(el);
       observers.push(obs);

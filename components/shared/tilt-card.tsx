@@ -10,10 +10,6 @@ interface TiltCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
-/**
- * Tilt 3D parallax al mover el mouse.
- * Usa springs de motion para suavizar el movimiento.
- */
 export function TiltCard({
   maxTilt = 8,
   className,

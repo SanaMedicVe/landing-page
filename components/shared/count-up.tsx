@@ -17,10 +17,6 @@ interface CountUpProps {
   decimals?: number;
 }
 
-/**
- * Contador que sube de 0 al valor "to" cuando entra al viewport.
- * Usa easing personalizado (sin ease-in-out genérico).
- */
 export function CountUp({
   to,
   prefix = "",
@@ -32,9 +28,7 @@ export function CountUp({
   const ref = React.useRef<HTMLSpanElement | null>(null);
   const inView = useInView(ref, { once: true, amount: 0.4 });
   const reduced = useReducedMotion();
-  const [value, setValue] = React.useState<number>(() =>
-    reduced ? to : 0
-  );
+  const [value, setValue] = React.useState<number>(() => (reduced ? to : 0));
 
   React.useEffect(() => {
     if (!inView || reduced) return;

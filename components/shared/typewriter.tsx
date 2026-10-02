@@ -15,15 +15,6 @@ interface TypewriterProps {
   caret?: boolean;
 }
 
-/**
- * Typewriter minimalista: cada letra aparece con un stagger suave.
- * Respeta prefers-reduced-motion: si está activo, muestra el texto
- * completo sin animación.
- *
- * Hidratación: para evitar mismatch entre SSR y cliente, sólo animamos
- * después de montar en cliente. En el primer render del servidor (y del
- * cliente antes de montar) se muestra el texto completo estático.
- */
 export function Typewriter({
   text,
   delay = 0,

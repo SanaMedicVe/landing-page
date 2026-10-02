@@ -7,10 +7,6 @@ import { CookieBanner } from "@/components/shared/cookie-banner";
 import { AnalyticsProvider } from "@/components/shared/analytics-provider";
 import { AnalyticsBoot } from "@/components/shared/analytics-boot";
 
-// Headings: Caviar Dreams. Como no está en Google Fonts, usamos Comfortaa
-// (mismo aire geométrico redondeado) y registramos el nombre real como
-// fallback para que, si el equipo de diseño carga la fuente original,
-// el navegador la prefiera.
 const heading = Comfortaa({
   variable: "--font-heading",
   subsets: ["latin"],
@@ -27,14 +23,6 @@ const mono = Geist_Mono({
   display: "swap",
 });
 
-/**
- * Branching de indexación por entorno.
- * - Producción: indexa todo.
- * - Preview / staging: bloquea indexación (noindex, nofollow, noarchive)
- *   para que Google no duplique contenido ni postee páginas sin terminar.
- *
- * Se duplica también en app/robots.ts para crawlers que ignoran <meta>.
- */
 const isProduction = process.env.VERCEL_ENV === "production";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sana.lat";
@@ -102,20 +90,16 @@ export const metadata: Metadata = {
     images: ["/og-sana.png"],
   },
   icons: {
-    // Navegadores modernos (vectorial, se ve crisp en retina).
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
       { url: "/favicon.ico", type: "image/x-icon" },
     ],
-    // Compatibilidad legacy: navegadores viejos que sólo leen .ico.
     shortcut: [{ url: "/favicon.ico", type: "image/x-icon" }],
-    // iOS "Añadir a inicio": 180×180 obligatorio para nitidez en retina.
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
   },
-  // PWA: Android usa este manifest para "Add to Home Screen".
   manifest: "/manifest.webmanifest",
   robots: isProduction
     ? { index: true, follow: true, googleBot: { index: true, follow: true } }
@@ -128,12 +112,6 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false, address: false, email: false },
 };
 
-/**
- * JSON-LD: Organization + WebSite + SoftwareApplication.
- *
- * Solo se inyecta en producción para que el HTML de staging quede
- * limpio y no exponga el schema antes de salir al público.
- */
 const jsonLd = isProduction
   ? [
       {
@@ -190,15 +168,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         geist.variable,
       )}
     >
-      {/* `suppressHydrationWarning` es seguro aquí: el `<body>` aloja
-          el `<CookieBanner />` (Client Component) y el navegador puede
-          añadir atributos extra (p.ej. `cz-shortcut-listen`) que no
-          existen en el HTML del servidor. No afecta al contenido. */}
       <body
         className="min-h-full flex flex-col bg-white text-sana-primary selection:bg-sana-accent/40"
         suppressHydrationWarning
       >
-        {/* JSON-LD para SEO. Solo se renderiza en producción. */}
         {jsonLd.map((schema, i) => (
           <Script
             key={`ld-${i}`}
@@ -211,8 +184,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         ))}
         {children}
         <CookieBanner />
-        {/* Tracking público (Segment). Inicializa el SDK y dispara
-            `landing_visit` cuando el visitante acepta cookies. */}
         <AnalyticsProvider />
         <AnalyticsBoot />
       </body>

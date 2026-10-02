@@ -1,21 +1,7 @@
 import type { MetadataRoute } from "next";
 
-/**
- * Sitemap XML.
- *
- * Indexa las 4 rutas públicas de Sana. lastModified usa la fecha
- * actual (la landing se mantiene "viva"); changeFrequency y priority
- * reflejan la jerarquía: la home manda, las páginas legales son de
- * referencia.
- *
- * Si VERCEL_ENV !== "production" (staging/preview), devolvemos un
- * sitemap vacío para que los crawlers que respetan robots.txt no
- * tengan nada que rascar (y los que lo ignoran, al menos vean un
- * sitemap trivial).
- */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://sana.lat";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sana.lat";
 
   const isProduction = process.env.VERCEL_ENV === "production";
 

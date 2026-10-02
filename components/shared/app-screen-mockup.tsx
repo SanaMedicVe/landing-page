@@ -7,12 +7,6 @@ type AppScreenMockupProps = {
   icon: React.ReactNode;
   children: React.ReactNode;
   className?: string;
-  /**
-   * Si es true, marca el mockup como imagen prioritaria (LCP).
-   * Pasar `true` SOLO en la primera instancia visible above-the-fold.
-   * Para el resto, dejar en `false` (default) para que use
-   * `loading="lazy"` y no compita por el ancho de banda.
-   */
   priority?: boolean;
 };
 
@@ -37,8 +31,6 @@ export function AppScreenMockup({
         height={697}
         sizes="(min-width: 768px) 220px, 50vw"
         className="pointer-events-none absolute inset-0 z-0 mx-auto block h-full w-full select-none object-fill"
-        // Solo la primera pantalla (above-the-fold) es prioritaria para
-        // mejorar LCP. El resto carga lazy para no saturar el bandwidth.
         priority={priority}
         loading={priority ? undefined : "lazy"}
       />

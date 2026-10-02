@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * Error boundary de la app.
- *
- * En Next.js App Router, `app/error.tsx` se renderiza DENTRO del
- * root layout (comparte `<html>` y `<body>`). Por eso este archivo
- * solo devuelve el contenido del slot, sin envolver en `<html>`.
- *
- * Para un fallback que reemplace TODO el documento, existe
- * `app/global-error.tsx`.
- */
-
 import { useEffect } from "react";
 import Link from "next/link";
 
@@ -22,8 +11,6 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log mínimo para que quede rastro del error en consola del navegador.
-    // El equipo puede conectar esto a Sentry/PostHog en el futuro.
     console.error("[Sana] Unhandled error:", error);
   }, [error]);
 

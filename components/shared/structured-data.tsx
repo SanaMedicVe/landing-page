@@ -12,15 +12,6 @@ type JsonLdProps = {
   id?: string;
 };
 
-/**
- * Inyecta JSON-LD en el DOM. Se usa para Schema.org (Organization,
- * FAQPage, etc.) en Client Components, donde no podemos usar el
- * `next/script` server-side.
- *
- * El JSON se escapa con JSON.stringify y se monta con
- * dangerouslySetInnerHTML: no es input de usuario, lo generamos
- * nosotros, así que es seguro.
- */
 export function StructuredData({ schema, id }: JsonLdProps) {
   const payload = Array.isArray(schema) ? schema : [schema];
   return (

@@ -9,28 +9,10 @@ import { Button } from "@/components/ui/button";
 import { useCookieConsent } from "@/lib/use-cookie-consent";
 import { useMounted } from "@/lib/use-reduced-motion";
 
-/**
- * Banner de consentimiento de cookies.
- *
- * Comportamiento esperado por producto:
- *  - Al cargar la página, si el navegador ya tiene persistida una
- *    decisión en `localStorage`, NO se muestra.
- *  - Si no hay decisión, aparece abajo como una notificación hasta
- *    que el visitante acepte o rechace.
- *  - Sana no utiliza cookies publicitarias de terceros: la decisión
- *    impacta únicamente a cookies técnicas y de preferencias. El
- *    detalle está documentado en `/aviso-de-privacidad`.
- *
- * El banner se renderiza en el layout raíz, fuera de `<main>`, y se
- * posiciona de forma fija para no afectar al flujo del contenido.
- */
 export function CookieBanner() {
   const { consent, accept, reject } = useCookieConsent();
   const reduced = useReducedMotion();
   const mounted = useMounted();
-
-  // Hidratación: hasta que `mounted` no sea true asumimos `undefined`
-  // para evitar parpadeos entre SSR y cliente.
   const visible = mounted && consent === undefined;
 
   return (
