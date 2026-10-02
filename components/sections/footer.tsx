@@ -18,6 +18,7 @@ import {
   getSocialXUrl,
   mailto,
 } from "@/lib/links";
+import { track, classifyHref } from "@/lib/analytics";
 
 const COLS = [
   {
@@ -182,11 +183,33 @@ function SocialIcon({
   label: string;
   children: React.ReactNode;
 }) {
+  // El footer dispara `contact_cta` para cualquier enlace de contacto
+  // (mailto o redes). No se envía la URL completa: sólo el tipo.
+  const kind = classifyHref(href);
+  const channel: string =
+    kind === "mailto"
+      ? "email"
+      : kind === "social_instagram"
+        ? "instagram"
+        : kind === "social_x"
+          ? "x"
+          : kind === "social_linkedin"
+            ? "linkedin"
+            : "other";
+
   return (
     <Link
       href={href}
       aria-label={label}
       {...externalLinkProps(href)}
+      onClick={() =>
+        track("contact_cta", {
+          audience: "contact",
+          cta_label: label,
+          section: "footer",
+          channel,
+        })
+      }
       className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/75 transition-colors hover:bg-sana-accent hover:text-sana-night-900"
     >
       {children}

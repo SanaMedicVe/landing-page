@@ -14,6 +14,7 @@ import {
   getDoctorLoginUrl,
   getDoctorOnboardingUrl,
 } from "@/lib/links";
+import { track, classifyHref } from "@/lib/analytics";
 
 const BULLETS = [
   {
@@ -178,6 +179,14 @@ export function ForDoctors() {
               <Link
                 href={getDoctorOnboardingUrl()}
                 {...externalLinkProps(getDoctorOnboardingUrl())}
+                onClick={() =>
+                  track("doctor_cta", {
+                    audience: "doctor",
+                    cta_label: "solicitar_onboarding",
+                    section: "for_doctors",
+                    target_kind: classifyHref(getDoctorOnboardingUrl()),
+                  })
+                }
               >
                 <MailPlus className="h-4 w-4" />
                 Solicitar onboarding
@@ -192,6 +201,14 @@ export function ForDoctors() {
               <Link
                 href={getDoctorLoginUrl()}
                 {...externalLinkProps(getDoctorLoginUrl())}
+                onClick={() =>
+                  track("doctor_cta", {
+                    audience: "doctor",
+                    cta_label: "ya_soy_doctor_login",
+                    section: "for_doctors",
+                    target_kind: classifyHref(getDoctorLoginUrl()),
+                  })
+                }
               >
                 <LogIn className="h-4 w-4" />
                 Ya soy doctor · Login

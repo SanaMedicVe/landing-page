@@ -4,6 +4,8 @@ import { Comfortaa, Geist_Mono, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { CookieBanner } from "@/components/shared/cookie-banner";
+import { AnalyticsProvider } from "@/components/shared/analytics-provider";
+import { AnalyticsBoot } from "@/components/shared/analytics-boot";
 
 // Headings: Caviar Dreams. Como no está en Google Fonts, usamos Comfortaa
 // (mismo aire geométrico redondeado) y registramos el nombre real como
@@ -209,6 +211,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         ))}
         {children}
         <CookieBanner />
+        {/* Tracking público (Segment). Inicializa el SDK y dispara
+            `landing_visit` cuando el visitante acepta cookies. */}
+        <AnalyticsProvider />
+        <AnalyticsBoot />
       </body>
     </html>
   );

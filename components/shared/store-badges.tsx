@@ -6,6 +6,7 @@ import {
   getPatientAppAndroidUrl,
   getPatientAppIosUrl,
 } from "@/lib/links";
+import { track, classifyHref } from "@/lib/analytics";
 
 type StoreBadgeProps = {
   className?: string;
@@ -30,6 +31,14 @@ export function AppStoreBadge({ className, href }: StoreBadgeProps) {
       href={target}
       aria-label="Descargar en el App Store"
       {...externalLinkProps(target)}
+      onClick={() =>
+        track("patient_cta", {
+          audience: "patient",
+          cta_label: "app_store_badge_ios",
+          section: "store_badge",
+          target_kind: classifyHref(target),
+        })
+      }
       className={cn(
         "inline-flex h-12 items-center gap-3 rounded-xl bg-black px-4 text-white transition-opacity hover:opacity-90",
         className,
@@ -67,6 +76,14 @@ export function GooglePlayBadge({ className, href }: StoreBadgeProps) {
       href={target}
       aria-label="Descargar en Google Play"
       {...externalLinkProps(target)}
+      onClick={() =>
+        track("patient_cta", {
+          audience: "patient",
+          cta_label: "app_store_badge_android",
+          section: "store_badge",
+          target_kind: classifyHref(target),
+        })
+      }
       className={cn(
         "inline-flex h-12 items-center gap-3 rounded-xl bg-black px-4 text-white transition-opacity hover:opacity-90",
         className,

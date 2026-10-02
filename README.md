@@ -40,6 +40,91 @@ aplica fallback automático):
 
 ---
 
+## Analítica y privacidad (Segment)
+
+La landing captura **métricas mínimas de uso público** para distinguir
+conversión Pacientes vs. Doctores y volumen de contacto. No se registra
+información clínica ni información personal innecesaria.
+
+### Eventos definidos
+
+Todos centralizados en `lib/analytics.ts` (`ANALYTICS_EVENTS`):
+
+| Evento | Cuándo se dispara | Audiencia |
+| --- | --- | --- |
+| `landing_visit` | Una vez por sesión, al montar la landing y tras aceptar cookies. | `patient` (denota visita pública) |
+| `patient_cta` | Click en CTAs de paciente: "Descargar la app" (hero y final), badges de App Store y Google Play. | `patient` |
+| `doctor_cta` | Click en CTAs de doctor: "Solicitar onboarding", "Ya soy doctor · Login", "¿Eres profesional de la salud?" (final). | `doctor` |
+| `contact_cta` | Click en icono del footer: mailto de contacto, Instagram, X, LinkedIn. | `contact` |
+
+### Propiedades permitidas (whitelist)
+
+`lib/analytics.ts` define `ALLOWED_PROPS` por evento. Cualquier prop
+fuera de la whitelist se descarta silenciosamente (fail-closed). Además,
+`track()` sanitiza los valores: descarta strings con `?token=`,
+`?code=`, `bearer …`, saltos de línea o longitud > 200.
+
+| Evento | Props |
+| --- | --- |
+| `landing_visit` | `audience`, `section`, `locale` |
+| `patient_cta` | `audience`, `cta_label`, `section`, `target_kind` |
+| `doctor_cta` | `audience`, `cta_label`, `section`, `target_kind` |
+| `contact_cta` | `audience`, `cta_label`, `section`, `channel` |
+
+**Nunca** se envía la URL completa del CTA: el helper `classifyHref()`
+devuelve un `target_kind` (`app_store_ios`, `app_store_android`,
+`doctor_login`, `doctor_onboarding`, `mailto`, `social_instagram`,
+`social_x`, `social_linkedin`, `anchor`, `external`) para que el destino
+real no viaje a Segment y se imposibilite la fuga de tokens.
+
+### Privacidad y consentimiento
+
+- **Gate por consentimiento.** `track()` lee `localStorage`
+  (`sana.cookie-consent.v1`) y **sólo emite cuando el visitante aceptó
+  cookies**. Si el visitante rechazó, `track()` es no-op. Si aún no
+  decidió, no emitimos hasta que el banner cambie la decisión a
+  `accepted` (escuchamos `sana:cookies-changed`).
+- **Sin PHI.** El módulo nunca lee inputs, URLs, query strings,
+  `sessionStorage`, `localStorage` de la app, ni headers.
+- **Sin tokens.** El sanitizador descarta valores que parezcan tokens
+  (`?token=`, `?code=`, `?access_token=`, `bearer …`). Sólo se envía
+  el `target_kind`, nunca el href.
+- **Anti-duplicado.** `landing_visit` se marca en `sessionStorage`
+  (`sana:analytics:visited.v1`) para que se emita como máximo una vez
+  por sesión.
+- **Modo "essential" en cookies rechazadas.** Si el visitante rechaza,
+  Segment ni siquiera recibe eventos: el SDK queda cargado pero
+  inactivo.
+
+### Variables de entorno
+
+| Variable | Default | Efecto |
+| --- | --- | --- |
+| `NEXT_PUBLIC_ANALYTICS_ENABLED` | `true` en producción, `false` en dev | Kill-switch global. Si `false`, `track()` es no-op y el SDK no se carga. |
+| `NEXT_PUBLIC_SEGMENT_WRITE_KEY` | `undefined` | Write key pública de Segment. Sin ella, `track()` es no-op silencioso. |
+
+> **Importante:** nunca se exponen secrets. La write key es pública
+> (es la misma que va en el `<script>` de Segment en el navegador).
+
+### Cómo apagarlo / validarlo
+
+- **Apagado temporal** (staging, demo legal): `NEXT_PUBLIC_ANALYTICS_ENABLED=false`.
+- **Validación en local**: dejar `NODE_ENV=development` (default) ⇒ no emite.
+- **Validar cableado en staging**: `NEXT_PUBLIC_ANALYTICS_ENABLED=true` + write key de un source de staging en Segment.
+- **Auditar eventos**: en Segment Debugger, filtrar por `Sana Web`;
+  sólo deben verse los 4 eventos listados, con props dentro de la
+  whitelist, y `landing_visit` como máximo 1 vez por sesión por
+  visitante.
+
+### Cobertura legal
+
+La sección §3 del `Aviso de privacidad` ya cubre "Analizar patrones de
+uso agregados y anónimos". Esta implementación cumple lo prometido:
+sólo eventos agregables, sin cookies publicitarias de terceros y sin
+cruzar datos con `mailto:` o redes sociales.
+
+---
+
 ## Stack técnico
 
 - **Next.js 16.3** (App Router + Turbopack)
@@ -51,7 +136,11 @@ aplica fallback automático):
 - **motion** (antes Framer Motion) — importar siempre desde `motion/react`
 - **lucide-react** — iconografía (sin clichés médicos: sin corazones, cruces
   ni estetoscopios de stock)
-- **NO** se usan: Lottie, 3D pesado, carruseles genéricos
+- **@segment/analytics-next** — analítica pública de la landing (ver
+  sección "Analítica y privacidad"): 4 eventos definidos, sin PHI,
+  gate por consentimiento, kill-switch vía env var.
+- **NO** se usan: Lottie, 3D pesado, carruseles genéricos, cookies
+  publicitarias de terceros
 
 ## Cómo correr el proyecto
 
@@ -163,13 +252,15 @@ Orden estricto en `app/page.tsx`:
 │   ├── layout.tsx           # metadata SEO en español, fuentes next/font
 │   └── page.tsx             # orquesta las secciones en orden
 ├── components/
-│   ├── shared/              # ECG, typewriter, count-up, tilt, observers
+│   ├── shared/              # ECG, typewriter, count-up, tilt, observers, analytics
 │   │   ├── ecg-backdrop.tsx
 │   │   ├── ecg-line.tsx
 │   │   ├── section-observer.tsx
 │   │   ├── typewriter.tsx
 │   │   ├── count-up.tsx
-│   │   └── tilt-card.tsx
+│   │   ├── tilt-card.tsx
+│   │   ├── analytics-provider.tsx  # inicializa Segment (cliente)
+│   │   └── analytics-boot.tsx      # dispara `landing_visit` tras consentimiento
 │   ├── sections/            # 1 archivo por sección
 │   │   ├── navbar.tsx
 │   │   ├── hero.tsx
@@ -187,6 +278,9 @@ Orden estricto en `app/page.tsx`:
 │   └── ui/                  # primitivas shadcn (button, card, accordion…)
 ├── lib/
 │   ├── utils.ts             # cn() — clsx + tailwind-merge
+│   ├── links.ts             # helpers de URLs externas (CTAs)
+│   ├── analytics.ts         # track() + whitelist de eventos/props (Segment)
+│   ├── use-cookie-consent.ts
 │   └── use-reduced-motion.ts
 ├── public/
 │   ├── icon.svg             # favicon
@@ -237,3 +331,21 @@ Orden estricto en `app/page.tsx`:
 - [x] Responsive (mobile-first, sm / md / lg / xl)
 - [x] `prefers-reduced-motion` respetado en todas las animaciones
 - [x] `pnpm lint` y `pnpm build` pasan limpios
+
+### Ticket: Métricas mínimas de uso público (Segment)
+
+- [x] **Eventos definidos** — `landing_visit`, `patient_cta`,
+      `doctor_cta`, `contact_cta` (whitelist en `lib/analytics.ts`).
+- [x] **No se captura PHI** — el módulo no lee inputs, URL, query
+      strings ni `localStorage`; sólo envía props de la whitelist.
+- [x] **No se envían tokens ni datos sensibles** — sanitizador
+      descarta `?token=`, `?code=`, `?access_token=`, `bearer …`;
+      nunca se envía la URL completa, sólo un `target_kind`.
+- [x] **Se puede distinguir conversión Doctor/Patient** — cada
+      `track()` incluye `audience: "patient" | "doctor" | "contact"`.
+- [x] **Gate por consentimiento** — `track()` sólo emite cuando
+      `localStorage.sana.cookie-consent.v1 === "accepted"`.
+- [x] **Anti-duplicado** — `landing_visit` se emite máximo 1 vez por
+      sesión (`sessionStorage.sana:analytics:visited.v1`).
+- [x] **Kill-switch** — `NEXT_PUBLIC_ANALYTICS_ENABLED=false`
+      desactiva todo el tracking.

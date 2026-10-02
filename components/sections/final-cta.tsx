@@ -16,6 +16,7 @@ import {
   getDoctorLoginUrl,
   getPatientAppUrl,
 } from "@/lib/links";
+import { track, classifyHref } from "@/lib/analytics";
 
 export function FinalCta() {
   const reduced = useReducedMotion();
@@ -126,6 +127,14 @@ export function FinalCta() {
             <Link
               href={getPatientAppUrl()}
               {...externalLinkProps(getPatientAppUrl())}
+              onClick={() =>
+                track("patient_cta", {
+                  audience: "patient",
+                  cta_label: "final_cta_descargar_app",
+                  section: "final_cta",
+                  target_kind: classifyHref(getPatientAppUrl()),
+                })
+              }
             >
               <Smartphone className="h-4 w-4" />
               Descargar la app gratis
@@ -150,6 +159,14 @@ export function FinalCta() {
           <Link
             href={getDoctorLoginUrl()}
             {...externalLinkProps(getDoctorLoginUrl())}
+            onClick={() =>
+              track("doctor_cta", {
+                audience: "doctor",
+                cta_label: "final_cta_eres_profesional",
+                section: "final_cta",
+                target_kind: classifyHref(getDoctorLoginUrl()),
+              })
+            }
             className="inline-flex items-center gap-2 text-sm text-white/65 transition-colors hover:text-sana-accent"
           >
             <Stethoscope className="h-4 w-4" />

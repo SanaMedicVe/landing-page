@@ -26,6 +26,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useMounted } from "@/lib/use-reduced-motion";
 import { externalLinkProps, getPatientAppUrl } from "@/lib/links";
+import { track, classifyHref } from "@/lib/analytics";
 
 export function Hero() {
   const reduced = useReducedMotion();
@@ -110,6 +111,14 @@ export function Hero() {
               <Link
                 href={getPatientAppUrl()}
                 {...externalLinkProps(getPatientAppUrl())}
+                onClick={() =>
+                  track("patient_cta", {
+                    audience: "patient",
+                    cta_label: "hero_descargar_app",
+                    section: "hero",
+                    target_kind: classifyHref(getPatientAppUrl()),
+                  })
+                }
               >
                 <Smartphone className="h-4 w-4" />
                 Descargar la app
